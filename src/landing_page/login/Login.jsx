@@ -20,7 +20,10 @@ function Login() {
         { withCredentials: true }
       );
       alert(response.data.msg);
-      window.location.href = import.meta.env.VITE_CLIENT_DASHBOARD_URL;
+      // window.location.href = import.meta.env.VITE_CLIENT_DASHBOARD_URL;
+
+      window.location.href = 'https://velora-dashboard-two.vercel.app/';
+      
     } catch (err) {
       setError("Login failed");
     }
