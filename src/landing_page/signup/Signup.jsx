@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -9,6 +11,7 @@ function Signup() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,23 +21,34 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
+
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/signup`,
         formData,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
-      alert(res.data.msg);
-      navigate("/login");
+
+      toast.success(res.data.msg || "Signup successful!");
+
+      // Delay redirect for 1.5s to show the toast
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } catch (err) {
-      setError("Signup failed");
+      console.error(err);
+      setError("Signup failed. Please try again.");
+      toast.error("Signup failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="signup-container">
+      <ToastContainer position="top-right" autoClose={2000} />
+
       {/* Left: FORM */}
       <div className="signup-right">
         <div className="nav-switch nav-right">
@@ -46,7 +60,7 @@ function Signup() {
           <h2>Create Account</h2>
           <p className="subtext">Start your journey with us</p>
 
-          {error && <div className="error-box">{error}</div>}
+          {error && <div className="feedback-box error">{error}</div>}
 
           <form onSubmit={handleSubmit}>
             <input
@@ -73,8 +87,8 @@ function Signup() {
               onChange={handleChange}
               required
             />
-            <button type="submit" className="submit-btn">
-              Get Started
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? "Creating..." : "Get Started"}
             </button>
           </form>
         </div>

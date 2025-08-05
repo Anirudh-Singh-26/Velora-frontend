@@ -879,3 +879,71 @@ font-weight: 700; /* or 600 for slightly lighter */
   margin-left: -25px;
 }
 
+.feedback-box {
+  margin-bottom: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.feedback-box.error {
+  background-color: #ffe6e6;
+  color: #b00020;
+  border: 1px solid #ffb3b3;
+}
+
+.submit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #4338ca;
+}
+
+.feedback-box {
+  margin-bottom: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.feedback-box.error {
+  background-color: #ffe6e6;
+  color: #b00020;
+  border: 1px solid #ffb3b3;
+}
+
+.submit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #4338ca;
+}
+
