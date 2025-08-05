@@ -18,7 +18,7 @@ Built with **React** and **Vite**, it is designed for fast performance and seaml
 - Axios for API calls  
 - React Router DOM  
 - React Toastify for notifications  
-- CSS Modules / Tailwind CSS  
+- CSS Modules / Bootstrap  
 
 ---
 
