@@ -8,6 +8,7 @@ function ProductPage() {
   return (
     <>
       <Hero />
+
       <LeftSection
         imageUrl="media/images/kite.png"
         productName="Kite"
@@ -17,6 +18,7 @@ function ProductPage() {
         googlePlay=""
         appStore=""
       />
+
       <RightSection
         imageUrl="media/images/console.png"
         productName="Console"
@@ -24,6 +26,7 @@ function ProductPage() {
         tryDemo=""
         learnMore=""
       />
+
       <LeftSection
         imageUrl="media/images/coin.png"
         productName="Coin"
@@ -32,14 +35,18 @@ function ProductPage() {
         learnMore=""
         googlePlay=""
         appStore=""
+        moveUp={true} // only this image moves up
       />
+
       <RightSection
         imageUrl="media/images/kiteconnect.png"
         productName="Kite Connect API"
         productDescription="Build powerful trading platforms and experiences with our super simple HTTP/JSON APIs. If you are a startup, build your investment app and showcase it to our clientbase."
         tryDemo=""
         learnMore=""
+        moveUp={true}
       />
+
       <LeftSection
         imageUrl="media/images/varsity.png"
         productName="Varsity mobile"
@@ -48,11 +55,14 @@ function ProductPage() {
         learnMore=""
         googlePlay=""
         appStore=""
+        moveUp={true}
       />
-      <p className="text-center mt-5 mb-5">
+
+      <p className="text-center mb-5">
         Want to know more about our technology stack? Check out the Velora.tech
         blog.
       </p>
+
       <Universe />
     </>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Universe() {
     return (
@@ -12,13 +13,10 @@ function Universe() {
         </div>
         <div className="row text-center">
           <div className="col-4 p-3 mt-5">
-            <img
-              src="/media/images/VeloraFundhouse.png"
-              style={{ width: "50%" }}
-            />
-            <p className="fs-9 text-muted mt-4">
-              Our asset management venture that is creating simple and
-              transparent index funds to help you save for your goals.
+            <img src="/media/images/tijori.svg" style={{ width: "45%" }} />
+            <p className="text-small text-muted mt-3">
+              Investment research platform that offers detailed insights on
+              stocks, sectors, supply chains, and more.
             </p>
           </div>
           <div className="col-4 p-3 mt-5">
@@ -63,12 +61,15 @@ function Universe() {
               mis-selling. Sign up for free
             </p>
           </div>
+          <Link
+              to="/signup">
           <button
             className="p-2 btn btn-primary fs-5 mb-5"
             style={{ width: "20%", margin: "0 auto" }}
           >
             Sign up Now
           </button>
+          </Link>
         </div>
       </div>
     );

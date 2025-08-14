@@ -1,8 +1,18 @@
 import React from "react";
 
-function LeftSection({imageUrl, productName, productDescription, tryDemo, learnMore, googlePlay, appStore}) {
-    return (
-      <div className="container ">
+function LeftSection({
+  imageUrl,
+  productName,
+  productDescription,
+  tryDemo,
+  learnMore,
+  googlePlay,
+  appStore,
+  moveUp, // new prop
+}) {
+  return (
+    <div className="container">
+      <div className={`row-wrapper ${moveUp ? "move-up-component" : ""}`}>
         <div className="row px-5">
           <div className="col-6 p-5">
             <img src={imageUrl} />
@@ -34,7 +44,8 @@ function LeftSection({imageUrl, productName, productDescription, tryDemo, learnM
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default LeftSection;
