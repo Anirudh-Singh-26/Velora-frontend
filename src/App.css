@@ -946,3 +946,7 @@ font-weight: 700; /* or 600 for slightly lighter */
   transform: translateY(-50px); /* Adjust this value as needed */
   display: block;
 }
+
+.test {
+  color: blue;
+}
