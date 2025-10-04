@@ -12,6 +12,13 @@ Built with **React** and **Vite**, it is designed for fast performance and seaml
 
 ---
 
+## 🔗 Related Repositories
+
+- **Velora Backend** - [https://github.com/Anirudh-Singh-26/Velora-backend](https://github.com/Anirudh-Singh-26/Velora-backend)  
+- **Velora Dashboard** - [https://github.com/Anirudh-Singh-26/Velora-dashboard](https://github.com/Anirudh-Singh-26/Velora-dashboard)  
+
+---
+
 ## 📦 Tech Stack
 
 - React 18 + Vite  
@@ -88,13 +95,6 @@ npm run preview
 - Visit the signup page to create a new account  
 - Login to access your personalized dashboard  
 - Explore stocks and manage your portfolio (via Velora Dashboard)  
-
----
-
-## 🔗 Related Repositories
-
-- **Velora Backend** - [https://github.com/Anirudh-Singh-26/Velora-backend](https://github.com/Anirudh-Singh-26/Velora-backend)  
-- **Velora Dashboard** - [https://github.com/Anirudh-Singh-26/Velora-dashboard](https://github.com/Anirudh-Singh-26/Velora-dashboard)  
 
 ---
 
