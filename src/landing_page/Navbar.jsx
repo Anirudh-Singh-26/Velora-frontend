@@ -1,28 +1,56 @@
-import React, { useEffect, useState } from "react";
+// src/components/Navbar.jsx
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+
+const PAGES = ["about", "product", "pricing", "support"];
 
 const Navbar = () => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
 
   const isActive = (path) => location.pathname === path;
-
   const isHome = location.pathname === "/";
 
   useEffect(() => {
-    if (!isHome) return; // only apply scroll logic on homepage
-
+    if (!isHome) return;
     const handleScroll = () => {
       const awardsSection = document.getElementById("awards");
       if (!awardsSection) return;
-
-      const triggerPoint = awardsSection.offsetTop - 80; // 80px before Awards
+      const triggerPoint = awardsSection.offsetTop - 80;
       setScrolled(window.scrollY >= triggerPoint);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
+
+  // close menu when route changes
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
+  // close menu when resizing to desktop (avoid stale open state)
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 768 && open) setOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [open]);
+
+  // optional: close by clicking outside the collapse when open
+  useEffect(() => {
+    const onDocClick = (e) => {
+      if (!open) return;
+      if (!containerRef.current) return;
+      // if click is inside containerRef (which contains the collapse and toggler) do nothing
+      if (containerRef.current.contains(e.target)) return;
+      setOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [open]);
 
   return (
     <nav
@@ -31,50 +59,107 @@ const Navbar = () => {
         backgroundColor: isHome
           ? scrolled
             ? "white"
-            : "rgba(15, 23, 42, 1)" // dark navy before Awards
+            : "rgba(15, 23, 42, 1)"
           : "white",
         transition: "background-color 0.3s ease",
       }}
     >
-      <div className="container">
-        {/* Logo */}
-        <Link className="navbar-brand" to="/">
+      <div
+        className="container"
+        ref={containerRef}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          paddingLeft: 0,
+        }}
+      >
+        {/* Brand */}
+        <Link
+          className="navbar-brand"
+          to="/"
+          style={{ display: "flex", alignItems: "center", minWidth: 0 }}
+        >
           <span
             className="brand-name"
             style={{
               borderBottom: "2px solid rgba(122, 180, 250, 1)",
               color: isHome && !scrolled ? "rgba(122, 180, 250, 1)" : "",
+              display: "inline-block",
+              minWidth: 0,
             }}
           >
             <b>VELORA</b>
           </span>
         </Link>
 
-        {/* Toggler */}
+        {/* spacer keeps brand flexible and prevents wrapping */}
+        <div style={{ flex: "1 1 auto", minWidth: 0 }} />
+
+        {/* Toggler (controlled by React) */}
         <button
-          className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+          aria-expanded={open}
+          aria-label={open ? "Close menu" : "Open menu"}
+          className="navbar-toggler"
+          onClick={() => setOpen((s) => !s)}
+          style={{
+            background: "transparent",
+            border: "none",
+            padding: 8,
+            flex: "0 0 auto",
+            zIndex: 1300,
+          }}
         >
-          <span className="navbar-toggler-icon"></span>
+          <span
+            className={`navbar-toggler-icon ${open ? "is-open" : ""}`}
+            style={{
+              color:
+                isHome && !scrolled
+                  ? "white" // dark background → white hamburger
+                  : "black", // white background → black hamburger
+            }}
+          >
+            <span></span> {/* middle line */}
+          </span>
         </button>
 
-        {/* Links */}
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav mx-auto d-flex align-items-center nav-gap">
-            {["about", "product", "pricing", "support"].map((page) => (
-              <li className="nav-item" key={page}>
+        {/* Collapse: controlled via `open` state by toggling `show` class */}
+        <div
+          id="navbarSupportedContent"
+          className={`collapse navbar-collapse ${open ? "show" : ""}`}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            flex: "0 0 auto",
+          }}
+        >
+          <ul
+            className="navbar-nav mx-auto d-flex align-items-center nav-gap"
+            style={{
+              display: "flex",
+              gap: "12px",
+              alignItems: "center",
+              margin: 0,
+              padding: 0,
+              listStyle: "none",
+            }}
+          >
+            {PAGES.map((page) => (
+              <li className="nav-item" key={page} style={{ listStyle: "none" }}>
                 <Link
                   to={`/${page}`}
                   className={`nav-link nav-pill fw-medium ${
                     isActive(`/${page}`) ? "active-pill" : ""
                   }`}
+                  onClick={() => setOpen(false)}
                   style={{
                     color: isHome && !scrolled ? "white" : "black",
+                    padding: "6px 10px",
+                    display: "inline-block",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {page.charAt(0).toUpperCase() + page.slice(1)}
@@ -83,18 +168,20 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Right Button */}
-          <div className="d-flex">
+          {/* Right CTA */}
+          <div className="d-flex" style={{ marginLeft: 8 }}>
             <Link
               to="/signup"
               className="btn btn-primary px-4 py-2 fw-medium rounded-pill text-white"
+              onClick={() => setOpen(false)}
               style={{
                 backgroundColor: "rgb(56, 126, 209)",
                 border: "none",
+                whiteSpace: "nowrap",
               }}
             >
-              Get Started&nbsp;&nbsp;{" "}
-              <i className="fa-solid fa-arrow-trend-up"></i>
+              Get Started&nbsp;
+              <i className="fa-solid fa-arrow-trend-up" />
             </Link>
           </div>
         </div>

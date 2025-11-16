@@ -949,3 +949,693 @@ font-weight: 700; /* or 600 for slightly lighter */
 .move-up-component {
   transform: translateY(-150px); /* moves the entire component up instantly */
 }
+
+
+
+
+/* =========================
+   FINAL RESPONSIVE FIXES (replace previous add-on)
+   Paste at the end of index.css
+   ========================= */
+
+/* ---------- Navbar: prevent wrapping, keep hamburger on same line ---------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background-color: #ffffff;
+  height: auto;
+  flex-wrap: nowrap;           /* prevent items from wrapping to next line */
+  align-content: center;
+  box-sizing: border-box;
+}
+
+/* Ensure brand can shrink and not push toggle */
+.brand-name {
+  flex: 1 1 auto;              /* allow brand to take available space but shrink if needed */
+  min-width: 0;                /* allow text-overflow to work */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 2.2rem;           /* desktop default */
+  letter-spacing: 0.35rem;
+  margin-left: -12px;
+}
+
+/* Logo sizing and prevention of wrap */
+.logo-icon {
+  flex: 0 0 auto;
+  height: 34px;
+  width: 34px;
+  margin-right: 8px;
+}
+
+/* nav items are inline on desktop but hidden on mobile (unless .keep-on-mobile) */
+.nav-item {
+  flex: 0 0 auto;
+  margin-left: 1.5rem;
+  white-space: nowrap;
+}
+
+/* Nav toggle (hamburger) — ensure it never wraps and is always inline */
+.nav-toggle {
+  display: none;               /* shown only on small screens */
+  flex: 0 0 auto;
+  background: transparent;
+  border: none;
+  font-size: 1.15rem;
+  cursor: pointer;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Mobile overlay nav (stable sizing & no wrapping inside) */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,12,0.92);
+  z-index: 9999;
+  padding: 1.75rem 1.25rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.mobile-nav .nav-list { list-style: none; padding: 0; margin: 2rem 0 0 0; }
+.mobile-nav .nav-list .nav-item {
+  display: block;
+  margin: 0.8rem 0;
+  font-size: 1.05rem;
+  color: #fff;
+  white-space: normal;
+}
+
+/* Close button */
+.mobile-nav .nav-close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* Show hamburger on narrow screens and hide desktop nav items */
+@media (max-width: 768px) {
+  .nav-toggle { display: inline-flex; }
+  .nav-item { display: none !important; }             /* desktop links hidden unless keep-on-mobile */
+  .keep-on-mobile { display: inline-block !important; }
+  .navbar { padding: 10px 12px; gap: 8px; }
+  .brand-name { font-size: 1.45rem; letter-spacing: 0.18rem; margin-left: 0; }
+  .logo-icon { height: 36px; width: 36px; }
+}
+
+/* When overlay open: JS should add .mobile-nav--open to #mobile-nav */
+.mobile-nav.mobile-nav--open { display: block; }
+
+/* Ensure hamburger itself never drops line in tight cases (extra safety) */
+.navbar > * { min-width: 0; }  /* prevents children from forcing width overflow */
+
+/* ---------- Buttons: smaller sizes on small screens ---------- */
+/* Desktop buttons keep original sizing; scale down progressively */
+.btn, .submit-btn, .open-account .btn-primary {
+  transition: all 0.18s ease;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 24px;
+}
+
+/* Medium screens: slightly smaller */
+@media (max-width: 992px) {
+  .btn, .submit-btn, .open-account .btn-primary { font-size: 0.95rem; padding: 9px 18px; border-radius: 20px; }
+}
+
+/* Mobile: make buttons compact and full-width */
+@media (max-width: 768px) {
+  .btn, .submit-btn, .open-account .btn-primary {
+    font-size: 0.92rem;
+    padding: 8px 12px;         /* noticeably smaller */
+    border-radius: 12px;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    box-sizing: border-box;
+  }
+  .hero-buttons .btn { width: 100%; } /* hero CTA stack */
+}
+
+/* Extra-small phones: tighten further */
+@media (max-width: 420px) {
+  .btn, .submit-btn, .open-account .btn-primary {
+    font-size: 0.88rem;
+    padding: 7px 10px;
+    border-radius: 10px;
+  }
+}
+
+/* Keep small icon-only buttons compact */
+.nav-toggle, .mobile-nav .nav-close { padding: 6px; }
+
+/* ---------- Hero + Signup minor safety + no-wrap fixes ---------- */
+/* Prevent brand or other long strings from forcing navbar wrap */
+.brand-name, .nav-item, .nav-toggle { white-space: nowrap; }
+
+/* Hero: scale down titles on small screens */
+@media (max-width: 768px) {
+  .hero-content h1 { font-size: 1.35rem; line-height: 1.2; }
+  .hero-buttons { gap: 8px; }
+}
+
+/* Signup layout: ensure stacked flow and avoid oversized 100vh images */
+.signup-container { flex-wrap: nowrap; align-items: stretch; }
+@media (max-width: 992px) {
+  .signup-container { flex-direction: column; }
+  .signup-left { width: 100%; order: 1; }
+  .signup-right { width: 100%; order: 2; padding: 1.25rem; }
+  .signup-full-image { max-height: 300px; width: 100%; height: auto; object-fit: cover; display: block; }
+}
+@media (max-width: 420px) {
+  .signup-left { display: none !important; } /* prevent huge images from pushing content */
+  .signup-right { padding: 0.9rem !important; }
+}
+
+/* ---------- Small visual & accessibility tweaks ---------- */
+a:focus, button:focus, input:focus { outline: 3px solid rgba(92,110,248,0.22); outline-offset: 2px; }
+.nav-pill { padding: 6px 8px; }
+@media (max-width: 768px) { .nav-pill.active-pill { padding-left: 10px !important; padding-right: 10px !important; } }
+
+/* ---------- Footer & support wrapper safety ---------- */
+@media (max-width: 768px) {
+  footer { padding: 1.25rem; }
+  #supportWrapper { margin: 0 12px; flex-direction: column; align-items: stretch; }
+}
+
+/* End of final responsive fixes */
+
+
+/* === Minimal toggler icon + collapse overlay behavior (for React-controlled toggler) === */
+
+/* Basic hamburger look for .navbar-toggler-icon (works without Bootstrap JS) */
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 22px;
+  height: 16px;
+  position: relative;
+}
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after,
+.navbar-toggler-icon > span {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.navbar-toggler-icon::before { top: 0; }
+.navbar-toggler-icon > span { top: 7px; }
+.navbar-toggler-icon::after { top: 14px; }
+
+/* When open, animate into an X */
+.navbar-toggler-icon.is-open::before { transform: translateY(7px) rotate(45deg); }
+.navbar-toggler-icon.is-open > span { opacity: 0; transform: scaleX(0.2); }
+.navbar-toggler-icon.is-open::after { transform: translateY(-7px) rotate(-45deg); }
+
+/* ensure toggler color adapts based on navbar background */
+.navbar { color: #111; }
+.navbar[style*="rgba(15, 23, 42, 1)"] { color: #fff; }
+
+/* Collapse behavior:
+   - Desktop (>=769px): show collapse inline (like bootstrap)
+   - Mobile (<769px): hide the collapse by default, show it when .show present as an overlay
+*/
+@media (min-width: 769px) {
+  .collapse.navbar-collapse { display: flex !important; position: relative !important; left: auto; top: auto; background: transparent; width: auto; padding: 0; }
+}
+
+/* Mobile overlay / dropdown */
+@media (max-width: 768px) {
+  .collapse.navbar-collapse { display: none !important; } /* hidden by default on mobile */
+  .collapse.navbar-collapse.show {
+    display: block !important;
+    position: fixed;
+    top: 56px;              /* adjust to match navbar height; sticky-top plus header height */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.96);
+    padding: 1.25rem;
+    z-index: 1300;
+    overflow-y: auto;
+  }
+  /* inside overlay, make links readable */
+  .collapse.navbar-collapse.show .nav-link { color: #fff !important; font-size: 1.05rem; display: block; padding: 12px 0; }
+  .collapse.navbar-collapse.show .btn { display: inline-block; margin-top: 12px; }
+}
+
+/* Prevent toggler from wrapping and ensure nav children don't force a newline */
+.navbar { flex-wrap: nowrap; }
+.navbar .container { display: flex; align-items: center; gap: 12px; padding-left: 0; }
+.navbar .navbar-brand { min-width: 0; }
+
+/* ensure .navbar-toggler always visible and doesn't drop to new line */
+.navbar-toggler { white-space: nowrap; flex: 0 0 auto; }
+
+/* small tweak: ensure collapsed overlay links are not hidden by body overscroll */
+.collapse.navbar-collapse.show { -webkit-overflow-scrolling: touch; }
+
+/* Accessibility: focus styles */
+.navbar-toggler:focus, .navbar-toggler:active { outline: 3px solid rgba(92,110,248,0.22); outline-offset: 2px; }
+
+/* Reduce button sizes on small screens (if you also applied the other responsive add-ons) */
+@media (max-width: 768px) {
+  .btn, .submit-btn { font-size: 0.92rem !important; padding: 8px 12px !important; border-radius: 12px !important; width: auto !important; }
+  .hero-buttons .btn { width: 100% !important; }
+}
+
+/* ====== NAVBAR / COLLAPSE BUGFIXES ======
+   Paste this at the very end of index.css (overwrite previous add-ons if necessary)
+   Fixes:
+   - overlapping overlay items
+   - hidden logo (spacing)
+   - toggler color + wrapped hamburger
+   - stacked mobile links with gaps
+*/
+
+:root {
+  --navbar-height: 4.5rem; /* fallback height used in overlay top offset */
+}
+
+/* ensure container has stacking context and preserves navbar above overlay */
+.navbar, .navbar .container {
+  position: relative;
+  z-index: 1400; /* navbar above normal content */
+  box-sizing: border-box;
+}
+
+/* reset any destructive negative margin that can hide logo on some viewports */
+.brand-name {
+  margin-left: 0 !important;     /* override -25px that was hiding the logo */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* logo guaranteed visible and aligned */
+.logo-icon {
+  display: inline-block !important;
+  height: 34px !important;
+  width: 34px !important;
+  margin-right: 10px !important;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+/* keep navbar single row and prevent children forcing wrap */
+.navbar { flex-wrap: nowrap !important; }
+.navbar > .container { display:flex; align-items:center; gap:12px; padding-left:0; }
+
+/* toggler safety: ensure visible and non-wrapping */
+.navbar-toggler {
+  white-space: nowrap !important;
+  flex: 0 0 auto !important;
+  z-index: 1500;
+  background: transparent;
+  border: none;
+}
+
+/* toggler icon color adapts correctly (dark bg -> white icon) */
+.navbar[style*="rgba(15, 23, 42, 1)"] .navbar-toggler,
+.navbar[style*="rgba(15, 23, 42, 1)"] .navbar-toggler-icon,
+.navbar[style*="rgba(15, 23, 42, 1)"] .navbar-toggler * {
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+/* make sure the toggler icon itself has contrast on light nav too */
+.navbar-toggler-icon,
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after,
+.navbar-toggler-icon > span { background: currentColor !important; }
+
+/* COLLAPSE overlay behavior (mobile) */
+/* Desktop: collapse visible inline */
+@media (min-width: 769px) {
+  .collapse.navbar-collapse { display: flex !important; position: relative !important; top: auto; left: auto; right: auto; bottom: auto; background: transparent !important; width: auto; padding: 0; }
+}
+
+/* Mobile: collapse becomes an overlay panel under the navbar (non-overlapping) */
+@media (max-width: 768px) {
+  /* hidden by default - `.show` toggled by your React state */
+  .collapse.navbar-collapse { display: none !important; }
+
+  .collapse.navbar-collapse.show {
+    display: flex !important;
+    flex-direction: column;
+    gap: 12px;
+    position: fixed;
+    /* put overlay directly below the navbar: use computed variable or fallback to 72px */
+    top: calc(var(--navbar-height, 72px));
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.25rem;
+    background: rgba(15, 23, 42, 0.98);
+    z-index: 1350;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* inside overlay: stack links with comfortable tap targets */
+  .collapse.navbar-collapse.show .nav-list,
+  .collapse.navbar-collapse.show .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .collapse.navbar-collapse.show .nav-link {
+    display: block !important;
+    color: #fff !important;
+    padding: 12px 8px !important;
+    font-size: 1.05rem;
+    text-decoration: none;
+    border-radius: 8px;
+  }
+
+  /* Make CTA visible and separated from links */
+  .collapse.navbar-collapse.show .btn {
+    display: inline-block;
+    margin-top: 8px;
+    align-self: flex-start;
+  }
+
+  /* ensure overlay doesn't cover the top navbar visually (navbar has higher z-index) */
+  .navbar { z-index: 1400; }
+  .collapse.navbar-collapse.show { z-index: 1350; }
+}
+
+/* prevent nav items from stacking and overlapping each other outside of overlay */
+.navbar-nav, .nav-list { margin: 0; padding: 0; list-style: none; }
+
+/* if any previous rule forced negative transforms, neutralize them for nav area */
+.navbar .move-up, .navbar .move-up-component { transform: none !important; }
+
+/* final safety: reset any display:none applied globally to logo/brand by other add-ons */
+.brand-name, .navbar-brand, .logo-icon { display: inline-block !important; visibility: visible !important; }
+
+/* tiny focus improvements */
+.navbar-toggler:focus { outline: 3px solid rgba(92,110,248,0.18); outline-offset: 2px; }
+
+
+/* =========================
+   HAMBURGER + MOBILE OVERLAY FIX
+   Paste at the END of index.css
+   ========================= */
+
+/* make sure navbar is the stacking context */
+.navbar { position: relative; z-index: 1400; }
+
+/* --- Force the toggler to the far right on small screens --- */
+@media (max-width: 768px) {
+  /* keep container layout, but pin toggler to right so it never wraps */
+  .navbar .container { display: flex; align-items: center; gap: 12px; padding-left: 0; }
+  .navbar-toggler {
+    position: absolute !important;
+    right: 12px !important;    /* flush-right, adjust if you want more padding */
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1600 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 8px !important;
+    background: transparent !important;
+    border: none !important;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+  }
+
+  /* ensure brand doesn't get overlapped by toggler (gives space on right) */
+  .navbar-brand { padding-right: 56px; min-width: 0; }
+
+  /* ensure logo visible */
+  .logo-icon { display: inline-block !important; height: 34px !important; width: 34px !important; object-fit: contain; }
+
+  /* override any site rule that hid nav items on mobile */
+  .nav-item { display: none !important; } /* keep default hidden outside overlay */
+  .collapse.navbar-collapse.show .nav-item { display: block !important; } /* BUT show nav-items inside overlay */
+
+  /* show collapse as overlay panel (stacked column) */
+  .collapse.navbar-collapse.show {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: calc( var(--navbar-height, 72px) ) !important; /* below navbar */
+    bottom: 0 !important;
+    padding: 1.25rem !important;
+    background: rgba(15,23,42,0.98) !important;
+    z-index: 1500 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* nav-list / navbar-nav inside overlay stack and are tappable */
+  .collapse.navbar-collapse.show .navbar-nav,
+  .collapse.navbar-collapse.show .nav-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+  }
+
+  .collapse.navbar-collapse.show .nav-link {
+    display: block !important;
+    padding: 12px 10px !important;
+    color: #fff !important;
+    font-size: 1.05rem !important;
+    text-decoration: none !important;
+    border-radius: 8px !important;
+  }
+
+  /* CTA inside overlay */
+  .collapse.navbar-collapse.show .btn {
+    display: inline-block !important;
+    margin-top: 8px !important;
+    background: rgb(56,126,209) !important;
+    color: #fff !important;
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+  }
+
+  /* Avoid overlay content sitting under the absolute toggler when open */
+  .collapse.navbar-collapse.show { padding-top: 12px !important; }
+
+  /* Prevent brand text wrap and ensure it truncates instead */
+  .brand-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* reduce hero/button size on very small screens */
+  .btn, .submit-btn { font-size: 0.92rem !important; padding: 8px 10px !important; border-radius: 10px !important; }
+}
+
+/* --- Hamburger icon polish --- */
+
+/* Create 3-line icon using pseudo elements for compatibility */
+.navbar-toggler .navbar-toggler-icon {
+  display: inline-block;
+  width: 20px;
+  height: 16px;
+  position: relative;
+  color: currentColor;
+}
+.navbar-toggler .navbar-toggler-icon::before,
+.navbar-toggler .navbar-toggler-icon::after,
+.navbar-toggler .navbar-toggler-icon > span {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.navbar-toggler .navbar-toggler-icon::before { top: 0; }
+.navbar-toggler .navbar-toggler-icon > span { top: 7px; }
+.navbar-toggler .navbar-toggler-icon::after { top: 14px; }
+
+/* animate into X when parent has .is-open (React sets class on icon) */
+.navbar-toggler .navbar-toggler-icon.is-open::before { transform: translateY(7px) rotate(45deg); }
+.navbar-toggler .navbar-toggler-icon.is-open > span { opacity: 0; transform: scaleX(0.2); }
+.navbar-toggler .navbar-toggler-icon.is-open::after { transform: translateY(-7px) rotate(-45deg); }
+
+/* color contrasts: make icon white on dark background */
+.navbar[style*="rgba(15, 23, 42, 1)"] .navbar-toggler,
+.navbar[style*="rgba(15, 23, 42, 1)"] .navbar-toggler-icon,
+.navbar[style*="rgba(15, 23, 42, 1)"] .navbar-toggler * {
+  color: #fff !important;
+}
+
+/* ensure toggler clickable area visually obvious */
+.navbar-toggler:hover { background: rgba(255,255,255,0.03); }
+
+/* final safety: if any earlier rule set .collapse.display none globally, override for desktop */
+@media (min-width: 769px) {
+  .collapse.navbar-collapse { display: flex !important; flex-direction: row !important; position: relative !important; background: transparent !important; width: auto !important; padding: 0 !important; }
+}
+
+
+/* =========================
+   FIX HAMBURGER ICON COLOR + REMOVE BORDER
+   ========================= */
+
+/* remove bootstrap's default border + background SVG */
+.navbar-toggler {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+/* replace the default SVG icon with custom white lines */
+.navbar-toggler .navbar-toggler-icon {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  display: inline-block;
+  background: none !important;   /* removes Bootstrap SVG */
+}
+
+/* three white lines */
+.navbar-toggler .navbar-toggler-icon::before,
+.navbar-toggler .navbar-toggler-icon::after,
+.navbar-toggler .navbar-toggler-icon span {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #fff !important; /* <-- MAKE THE LINES WHITE */
+  border-radius: 2px;
+  transition: 0.2s ease;
+}
+
+/* line positions */
+.navbar-toggler .navbar-toggler-icon::before { top: 0; }
+.navbar-toggler .navbar-toggler-icon span { top: 8px; }
+.navbar-toggler .navbar-toggler-icon::after { top: 16px; }
+
+/* turn into X when open */
+.navbar-toggler .navbar-toggler-icon.is-open::before {
+  transform: translateY(8px) rotate(45deg);
+}
+.navbar-toggler .navbar-toggler-icon.is-open span {
+  opacity: 0;
+}
+.navbar-toggler .navbar-toggler-icon.is-open::after {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ensure icon stays white even on dark nav */
+.navbar[style*="rgba(15, 23, 42"] .navbar-toggler * {
+  background-color: #fff !important;
+  color: #fff !important;
+}
+
+/* OPTIONAL: remove highlight box on tap on mobile */
+.navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+/* =========================
+   AUTO-COLOR HAMBURGER (white on dark, black on light)
+   ========================= */
+
+/* remove bootstrap defaults */
+.navbar-toggler {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* wrapper for our custom icon (span inside button) */
+.navbar-toggler .navbar-toggler-icon {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  display: inline-block;
+  background: none !important; /* kills bootstrap SVG */
+}
+
+/* 3 lines */
+.navbar-toggler .navbar-toggler-icon::before,
+.navbar-toggler .navbar-toggler-icon::after,
+.navbar-toggler .navbar-toggler-icon span {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor !important;  /* <-- color controlled by navbar */
+  border-radius: 2px;
+  transition: 0.2s ease;
+}
+
+/* line positions */
+.navbar-toggler .navbar-toggler-icon::before { top: 0; }
+.navbar-toggler .navbar-toggler-icon span { top: 8px; }
+.navbar-toggler .navbar-toggler-icon::after { top: 16px; }
+
+/* X animation when open */
+.navbar-toggler .navbar-toggler-icon.is-open::before {
+  transform: translateY(8px) rotate(45deg);
+}
+.navbar-toggler .navbar-toggler-icon.is-open span {
+  opacity: 0;
+}
+.navbar-toggler .navbar-toggler-icon.is-open::after {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ========= COLOR LOGIC ========= */
+
+/* DARK NAVBAR → WHITE HAMBURGER */
+.navbar[style*="rgba(15, 23, 42"] .navbar-toggler,
+.navbar[style*="rgba(15, 23, 42"] .navbar-toggler-icon,
+.navbar[style*="rgba(15, 23, 42"] .navbar-toggler-icon * {
+  color: #fff !important;
+}
+
+/* LIGHT NAVBAR (white) → BLACK HAMBURGER */
+.navbar[style*="white"] .navbar-toggler,
+.navbar[style*="white"] .navbar-toggler-icon,
+.navbar[style*="white"] .navbar-toggler-icon * {
+  color: #000 !important;
+}
+
+/* remove tap outline */
+.navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
