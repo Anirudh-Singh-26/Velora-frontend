@@ -72,21 +72,35 @@ const Navbar = () => {
           alignItems: "center",
           gap: "12px",
           paddingLeft: 0,
+          position: "relative", // needed so absolute toggler sits relative to container
         }}
       >
-        {/* Brand */}
+        {/* Brand (no border/box) */}
         <Link
           className="navbar-brand"
           to="/"
-          style={{ display: "flex", alignItems: "center", minWidth: 0 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            minWidth: 0,
+            gap: 8,
+            paddingRight: 56, // leave room so absolute toggler doesn't overlap brand on mobile
+          }}
         >
           <span
             className="brand-name"
             style={{
-              borderBottom: "2px solid rgba(122, 180, 250, 1)",
+              /* removed border and box so no visible border */
+              borderBottom: "none",
+              border: "none",
+              boxShadow: "none",
+              padding: 0,
               color: isHome && !scrolled ? "rgba(122, 180, 250, 1)" : "",
               display: "inline-block",
               minWidth: 0,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
             <b>VELORA</b>
@@ -94,9 +108,10 @@ const Navbar = () => {
         </Link>
 
         {/* spacer keeps brand flexible and prevents wrapping */}
-        <div style={{ flex: "1 1 auto", minWidth: 0 }} />
+        <div style={{ flex: "0 0 auto", minWidth: 0 }} />
 
-        {/* Toggler (controlled by React) */}
+        {/* Toggler (controlled by React) pinned to right via CSS rules we've already added.
+            Inline placement kept; CSS from your final add-on should absolute-position it on mobile. */}
         <button
           type="button"
           aria-controls="navbarSupportedContent"
@@ -115,17 +130,14 @@ const Navbar = () => {
           <span
             className={`navbar-toggler-icon ${open ? "is-open" : ""}`}
             style={{
-              color:
-                isHome && !scrolled
-                  ? "white" // dark background → white hamburger
-                  : "black", // white background → black hamburger
+              color: isHome && !scrolled ? "white" : "black", // inline color switch
             }}
           >
-            <span></span> {/* middle line */}
+            <span></span>
           </span>
         </button>
 
-        {/* Collapse: controlled via `open` state by toggling `show` class */}
+        {/* Collapse: make this stretch and center its children on desktop */}
         <div
           id="navbarSupportedContent"
           className={`collapse navbar-collapse ${open ? "show" : ""}`}
@@ -133,11 +145,13 @@ const Navbar = () => {
             display: "flex",
             alignItems: "center",
             gap: "16px",
-            flex: "0 0 auto",
+            flex: "1 1 auto", // <-- allow collapse to take available space
+            justifyContent: "center", // <-- center the nav links
+            minWidth: 0,
           }}
         >
           <ul
-            className="navbar-nav mx-auto d-flex align-items-center nav-gap"
+            className="navbar-nav mx-auto d-flex align-items-center nav-gap nav-list"
             style={{
               display: "flex",
               gap: "12px",
@@ -145,6 +159,8 @@ const Navbar = () => {
               margin: 0,
               padding: 0,
               listStyle: "none",
+              justifyContent: "center", // extra centering safety
+              minWidth: 0,
             }}
           >
             {PAGES.map((page) => (
@@ -168,8 +184,8 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Right CTA */}
-          <div className="d-flex" style={{ marginLeft: 8 }}>
+          {/* Right CTA (keep it after nav center so it's visually on the right) */}
+          <div className="d-flex" style={{ marginLeft: 8, flex: "0 0 auto" }}>
             <Link
               to="/signup"
               className="btn btn-primary px-4 py-2 fw-medium rounded-pill text-white"

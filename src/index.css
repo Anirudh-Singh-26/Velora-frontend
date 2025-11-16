@@ -1639,3 +1639,54 @@ a:focus, button:focus, input:focus { outline: 3px solid rgba(92,110,248,0.22); o
   box-shadow: none !important;
 }
 
+/* FORCE-REMOVE border/box-shadow/outline from brand (last-resort override) */
+.navbar .navbar-brand,
+.navbar .brand-name,
+.navbar-brand,
+.brand-name {
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  appearance: none !important;
+}
+
+/* Remove any pseudo-element decorations on the brand */
+.navbar .brand-name::before,
+.navbar .brand-name::after,
+.navbar-brand::before,
+.navbar-brand::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* In case the border is applied to an image or wrapper */
+.navbar .logo-icon,
+.navbar-brand img,
+.navbar .navbar-brand img {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+/* If some active/focus style is adding a line, neutralize it */
+.navbar .brand-name:focus,
+.navbar .brand-name:active,
+.navbar-brand:focus,
+.navbar-brand:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Extra safety: remove 1px bottom borders that may be on immediate parent */
+.navbar > .container,
+.navbar {
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
